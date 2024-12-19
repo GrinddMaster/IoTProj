@@ -17,7 +17,8 @@ class AiError extends AiState {
 class AiInitState extends AiState {}
 
 class AiCubit extends Cubit<AiState> {
-  final String _apikey = '';
+  final String _apikey =
+      '';
   final String _url = 'https://api.openai.com/v1/completions';
 
   AiCubit() : super(AiInitState());
@@ -32,7 +33,7 @@ class AiCubit extends Cubit<AiState> {
         'model': 'gpt-4o-mini',
         'prompt': message,
         'max-tokens': '2048',
-        'tempreature': '0.7',
+        'temperature': '0.7',
       };
 
       final response = await http.post(
@@ -46,6 +47,8 @@ class AiCubit extends Cubit<AiState> {
         emit(AiResponse(jsonData['choices'][0]['text']));
       } else {
         emit(AiError('Failed Response: ${response.statusCode}'));
+        print(response.body);
+        print(response.headers);
       }
     } catch (message) {
       emit(AiError('Exception when sending: $message'));
