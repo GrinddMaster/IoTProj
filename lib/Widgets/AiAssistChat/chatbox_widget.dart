@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:advnet/Widgets/AiAssistChat/bloc/chatbox_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatBoxWidget extends StatelessWidget {
-  const ChatBoxWidget({super.key});
+  ChatBoxWidget({super.key});
+  final _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,18 @@ class ChatBoxWidget extends StatelessWidget {
               width: 400,
               color: Colors.red,
               height: 500,
-              child: Text("Varaiable result from Cubit"),
+              child: BlocBuilder<AiCubit, AiState>(
+                builder: (context, state) {
+                  if (state is AiInitState) {
+                    return Text('Waiting response...');
+                  } else if (state is AiError) {
+                    return Text("Error Occured! ${state.error}");
+                  } else if (state is AiResponse) {
+                    return Text(state.response);
+                  }
+                  return Text("Exception occured?");
+                },
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -24,12 +37,15 @@ class ChatBoxWidget extends StatelessWidget {
                   child: TextField(
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(hintText: "Prompt"),
+                    controller: _controller,
                   ),
                 ),
                 IconButton(
                   iconSize: 40,
                   icon: Icon(Icons.arrow_right),
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<AiCubit>().sendText(_controller.text);
+                  },
                 ),
               ],
             ),

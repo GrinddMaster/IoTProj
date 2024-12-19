@@ -3,19 +3,17 @@ import 'package:advnet/Widgets/AiAssistChat/chatbox_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AiAssistPageBlocProvider extends StatelessWidget{
+class AiAssistPageBlocProvider extends StatelessWidget {
   const AiAssistPageBlocProvider({super.key});
 
-	@override
-	BlocProvider<AiCubit> build(BuildContext context){
-		return BlocProvider<AiCubit>(
-			create:(BuildContext context)=> AiCubit() ,
-			child: ChatBoxWidget(),
-			);
-	}
+  @override
+  BlocProvider<AiCubit> build(BuildContext context) {
+    return BlocProvider<AiCubit>(
+      create: (BuildContext context) => AiCubit(),
+      child: ChatBoxWidget(),
+    );
+  }
 }
-
-
 
 class AiAssistPage extends StatelessWidget {
   const AiAssistPage({super.key});

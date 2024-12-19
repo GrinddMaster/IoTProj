@@ -14,11 +14,10 @@ class AiError extends AiState {
   AiError(this.error);
 }
 
-class AiInitState extends AiState{}
+class AiInitState extends AiState {}
 
 class AiCubit extends Cubit<AiState> {
-  final String _apikey =
-      '';
+  final String _apikey = '';
   final String _url = 'https://api.openai.com/v1/completions';
 
   AiCubit() : super(AiInitState());
@@ -26,14 +25,14 @@ class AiCubit extends Cubit<AiState> {
   void sendText(String message) async {
     try {
       final header = {
-        'Authorizatoin': 'Bearer $_apikey',
+        'Authorization': 'Bearer $_apikey',
         'Content-type': 'application/json',
       };
       final body = {
-        'model': 'text-davinci-002',
+        'model': 'gpt-4o-mini',
         'prompt': message,
-        'max-tokens': '1024',
-        'tempreature': '0.6',
+        'max-tokens': '2048',
+        'tempreature': '0.7',
       };
 
       final response = await http.post(
@@ -49,7 +48,7 @@ class AiCubit extends Cubit<AiState> {
         emit(AiError('Failed Response: ${response.statusCode}'));
       }
     } catch (message) {
-        emit(AiError('Exception when sending: $message'));
+      emit(AiError('Exception when sending: $message'));
     }
   }
 }
