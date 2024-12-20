@@ -36,7 +36,7 @@ class ChatBoxWidget extends StatelessWidget {
                 Expanded(
                   child: TextField(
                     textAlign: TextAlign.left,
-                    decoration: InputDecoration(hintText: "Prompt"),
+                    decoration: InputDecoration(hintText: "Chat !"),
                     controller: _controller,
                   ),
                 ),
@@ -44,7 +44,7 @@ class ChatBoxWidget extends StatelessWidget {
                   iconSize: 40,
                   icon: Icon(Icons.arrow_right),
                   onPressed: () {
-                    context.read<AiCubit>().sendText(_controller.text);
+                    context.read<AiCubit>().sendText(_controller.text.toString());
                   },
                 ),
               ],
