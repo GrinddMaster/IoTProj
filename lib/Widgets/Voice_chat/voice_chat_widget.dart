@@ -13,7 +13,7 @@ class VoiceChatWidget extends StatelessWidget {
             context.read<VoicechatCubit>().pressedButton();
           },
           onLongPressEnd: (_) {
-            context.read<VoicechatCubit>().releasedButton();
+            context.read<VoicechatCubit>().releasedButton(context);
           },
           child: ElevatedButton(
             onPressed: () {},

@@ -1,0 +1,1 @@
+/home/ali/FlutterTest/advnet/build/app/intermediates/cxx/Debug/681jp4il/obj/armeabi-v7a
