@@ -17,41 +17,42 @@ class AiError extends AiState {
 class AiInitState extends AiState {}
 
 class AiCubit extends Cubit<AiState> {
-  final String _apikey =
-      '';
+  final String _apikey = '';
   final String _url = 'https://api.openai.com/v1/chat/completions';
 
   AiCubit() : super(AiInitState());
 
   void sendText(String message) async {
-	  final Map<String,Object> body;
-      final header = {
-        'Authorization': 'Bearer $_apikey',
-        'Content-type': 'application/json',
-      };
-	  if(message == null){body = {};print("Empty body~");}else{
+    final Map<String, Object> body;
+    final header = {
+      'Authorization': 'Bearer $_apikey',
+      'Content-type': 'application/json',
+    };
+    if (message == null) {
+      body = {};
+      print("Empty body~");
+    } else {
       body = {
         'model': 'gpt-4o-mini',
         'messages': [
-			{"role":"user","content":message}
-		],
+          {"role": "user", "content": message},
+        ],
         'max_tokens': 2048,
         'temperature': 0.7,
       };
-	  }
+    }
 
-      final response = await http.post(
-        Uri.parse(_url),
-        headers: header,
-        body: jsonEncode(body),
-      );
+    final response = await http.post(
+      Uri.parse(_url),
+      headers: header,
+      body: jsonEncode(body),
+    );
 
-      if (response.statusCode == 200) {
-        final jsonData = jsonDecode(response.body);
-		print(jsonData['choices'][0]['message']['content']);
-        emit(AiResponse(jsonData['choices'][0]['message']['content']));
-      } else {
-        emit(AiError('Failed Response: ${response.statusCode}'));
-      }
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      emit(AiResponse(jsonData['choices'][0]['message']['content']));
+    } else {
+      emit(AiError('Failed Response: ${response.statusCode}'));
+    }
   }
 }
