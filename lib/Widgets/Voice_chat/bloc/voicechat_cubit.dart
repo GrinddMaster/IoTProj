@@ -27,6 +27,6 @@ class VoicechatCubit extends Cubit<bool> {
     emit(false);
     _speechtotext.stop();
     output = recoSpeech;
-	context.read<AiCubit>().sendText(output);
+    context.read<AiCubit>().sendText(output);
   }
 }

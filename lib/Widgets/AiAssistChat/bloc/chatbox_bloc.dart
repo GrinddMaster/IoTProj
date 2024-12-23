@@ -17,7 +17,8 @@ class AiError extends AiState {
 class AiInitState extends AiState {}
 
 class AiCubit extends Cubit<AiState> {
-  final String _apikey = '';
+  final String _apikey =
+      '';
   final String _url = 'https://api.openai.com/v1/chat/completions';
 
   AiCubit() : super(AiInitState());

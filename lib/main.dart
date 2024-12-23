@@ -1,3 +1,4 @@
+import 'package:advnet/Widgets/AiAssistChat/chatbox_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:advnet/pages/mqtt_client.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +19,7 @@ class Home extends MaterialApp {
 
 void main() {
   Bloc.observer = const CountObserver();
-  //startClient();
+  startClient();
   runApp(Home());
+  initalizeTts();
 }

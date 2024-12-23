@@ -1,10 +1,13 @@
 import 'package:advnet/Widgets/Voice_chat/voice_chat_widget.dart';
+import 'package:advnet/pages/mqtt_client.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:advnet/Widgets/AiAssistChat/bloc/chatbox_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:advnet/Widgets/Voice_chat/bloc/voicechat_cubit.dart';
 
 int state = 0;
+FlutterTts tts = FlutterTts();
 
 class ChatBoxWidget extends StatelessWidget {
   ChatBoxWidget({super.key});
@@ -27,6 +30,7 @@ class ChatBoxWidget extends StatelessWidget {
                   } else if (state is AiError) {
                     return Text("Error Occured! ${state.error}");
                   } else if (state is AiResponse) {
+                    voiceCommand(state.response);
                     return Text(state.response);
                   }
                   return Text("Exception occured?");
@@ -70,4 +74,25 @@ class ChatBoxWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> voiceCommand(String response) async{
+  await tts.speak(response);
+  if (response.contains("level 1") || response.contains("Level 1")) {
+    motorDriver("level1");
+  } else if (response.contains("level 2") || response.contains("Level 2")) {
+    motorDriver("level2");
+  } else if (response.contains("level 3") || response.contains("Level 3")) {
+    motorDriver("level3");
+  }
+}
+
+Future<void> initalizeTts() async {
+  await tts.isLanguageAvailable("en-US");
+  await tts.getDefaultVoice;
+  await tts.setVolume(1.0);
+  await tts.setPitch(1.0);
+  await tts.setSpeechRate(1.0);
+  await tts.awaitSpeakCompletion(true);
+  await tts.awaitSynthCompletion(true);
 }
