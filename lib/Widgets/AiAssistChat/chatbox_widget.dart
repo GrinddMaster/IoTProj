@@ -76,7 +76,7 @@ class ChatBoxWidget extends StatelessWidget {
   }
 }
 
-Future<void> voiceCommand(String response) async{
+Future<void> voiceCommand(String response) async {
   await tts.speak(response);
   if (response.contains("level 1") || response.contains("Level 1")) {
     motorDriver("level1");

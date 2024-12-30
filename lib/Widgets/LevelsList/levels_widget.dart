@@ -7,6 +7,7 @@ import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 //TODO: onChange should call the publish message functoin
 //TODO: send the value to the publish function.
+int bandwidth = 0;
 
 class LevelsWidget extends StatelessWidget {
   const LevelsWidget({super.key});
@@ -26,22 +27,41 @@ class LevelsWidget extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.all(10),
           color: Colors.white,
-          child: BlocBuilder<SliderCubit, double>(
-            builder: (context, state) {
-              return SfSlider.vertical(
-                min: 0,
-                max: 3,
-                value: state,
-                interval: 1,
-                showTicks: true,
-                showLabels: true,
-                minorTicksPerInterval: 1,
-                onChanged: (value) {
-                  context.read<SliderCubit>().emitValue(value);
-                  speedLevelPicker(value);
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 40,
+            children: [
+              BlocBuilder<SliderCubit, double>(
+                builder: (context, state) {
+                  return SfSlider.vertical(
+                    min: 0,
+                    max: 3,
+                    value: state,
+                    interval: 1,
+                    showTicks: true,
+                    showLabels: true,
+                    minorTicksPerInterval: 1,
+                    onChanged: (value) {
+                      context.read<SliderCubit>().emitValue(value);
+                      speedLevelPicker(value);
+                    },
+                  );
                 },
-              );
-            },
+              ),
+              SizedBox(
+                width: 200,
+                height: 200,
+                child: Column(
+                  children: [
+                    Row(children: [Text("level 3 -> 24C <<")]),
+                    Divider(),
+                    Row(children: [Text("level 2 -> 22C - 24C")]),
+                    Divider(),
+                    Row(children: [Text("level 1 -> 20C - 22C ")]),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -61,10 +81,14 @@ class LevelsWidget extends StatelessWidget {
 }
 
 void speedLevelPicker(double value) {
-  if (value < 1.0 && value >= 0.0) {
+  if (value < 1.0 && value >= 0.0 && bandwidth == 0) {
+    motorDriver("level0");
+    bandwidth = 1; //Limits signals sent to broker
   } else if (value >= 1.0 && value < 2.0) {
+    bandwidth = 0;
     motorDriver("level1");
   } else {
+    bandwidth = 0;
     (value > 2.0 && value <= 2.5)
         ? motorDriver("level2")
         : motorDriver("level3");
